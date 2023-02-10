@@ -59,6 +59,22 @@ ll query(ll node,ll b,ll e,ll i,ll j,ll carry=0){
 
     return p1 + p2;
 }
+void update(ll node,ll b,ll e,ll i,ll j,ll val){
+    if (i > e || j < b)
+        return;
+    if (b >= i && e <= j) 
+    {
+        tree[node].sum += ((e - b + 1) * val); 
+        tree[node].prop += val; 
+        return;
+    }
+    ll left=2*node;
+    ll right=2*node+1;
+    ll mid=(b+e)/2;
+    update(left,b,mid,i,j,val);
+    update(right,mid+1,e,i,j,val);
+  tree[node].sum = tree[left].sum + tree[right].sum + (e - b + 1) * tree[node].prop;
+}
 int main()
 {   ios_base::sync_with_stdio(false);  cin.tie(NULL); cout.tie(NULL);
       //freopen("read.txt","r",stdin);
@@ -67,6 +83,16 @@ int main()
       cin>>n;
       fin(i,arr,n);
       build(1,0,n-1);
+      cin>>m;
+      f(i,m){
+            cin>>k>>u>>v;
+            if(k==1)
+             {  cin>>x;
+                update(1,0,n-1,u,v,x);
+            }
+            else cout<<query(1,0,n-1,u,v)<<endl;
+            
+      }
    
       
      
